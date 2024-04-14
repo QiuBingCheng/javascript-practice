@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>001 shoot birds</title>
+    <style>
+        body {
+            font-size: large;
+            cursor: crosshair;
+        }
+
+        .top-div {
+            color: blue;
+            height: 50px;
+            display: flex;
+            align-items: center
+        }
+
+        .container {
+            background-color: aliceblue;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .moving-image {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 0;
+            animation: moveRight 15s linear;
+        }
+
+        @keyframes moveRight {
+            0% {
+                left: 0;
+                /* 初始位置 */
+            }
+
+            100% {
+                left: calc(100% - 50px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-div">
+        <span>Scores: 0</span>
+    </div>
+    <div class="container">
+        <img id="movingImage" class="moving-image" src="image/bird1.png">
+
+    </div>
+    <script>
+        var img = document.getElementById('movingImage');
+
+        document.addEventListener('click', function (event) {
+            // 獲取圖片的位置和大小信息
+            var rect = img.getBoundingClientRect();
+            var imgLeft = rect.left;
+            var imgTop = rect.top;
+            var imgRight = imgLeft + img.width;
+            var imgBottom = imgTop + img.height;
+
+            // 獲取滑鼠的位置
+            var mouseX = event.clientX;
+            var mouseY = event.clientY;
+
+            // 判斷滑鼠是否在圖片範圍內
+            if (mouseX >= imgLeft && mouseX <= imgRight && mouseY >= imgTop && mouseY <= imgBottom) {
+                console.log('Mouse is on the image.');
+                img.parentNode.removeChild(img);
+            } else {
+                console.log('Mouse is not on the image.');
+            }
+        });
+    </script>
+</body>
+
+
+</html>
