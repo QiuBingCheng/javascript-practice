@@ -31,54 +31,121 @@
             height: 50px;
             position: absolute;
             left: 0;
-            animation: moveRight 15s linear;
-        }
-
-        @keyframes moveRight {
-            0% {
-                left: 0;
-                /* 初始位置 */
-            }
-
-            100% {
-                left: calc(100% - 50px);
-            }
         }
     </style>
 </head>
 
 <body>
-    <div class="top-div">
-        <span>Scores: 0</span>
-    </div>
-    <div class="container">
-        <img id="movingImage" class="moving-image" src="image/bird1.png">
+    <div id="root">
+        <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+        <!-- 引入 React 和 ReactDOM 的 JavaScript 文件 -->
+        <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
+        <script type="text/babel">
+            const { useState, useEffect } = React;
 
-    </div>
-    <script>
-        var img = document.getElementById('movingImage');
+            const App = () => {
 
-        document.addEventListener('click', function (event) {
-            // 獲取圖片的位置和大小信息
-            var rect = img.getBoundingClientRect();
-            var imgLeft = rect.left;
-            var imgTop = rect.top;
-            var imgRight = imgLeft + img.width;
-            var imgBottom = imgTop + img.height;
+                const [score, setScore] = useState(0);
+                const [imgList, setImgList] = useState([])
 
-            // 獲取滑鼠的位置
-            var mouseX = event.clientX;
-            var mouseY = event.clientY;
+                const BirdImage = () => {
+                    return <img key={1} className="moving-image" src="image/bird1.png" />
+                }
 
-            // 判斷滑鼠是否在圖片範圍內
-            if (mouseX >= imgLeft && mouseX <= imgRight && mouseY >= imgTop && mouseY <= imgBottom) {
-                console.log('Mouse is on the image.');
-                img.parentNode.removeChild(img);
-            } else {
-                console.log('Mouse is not on the image.');
+                const moveBirds = () => {
+                    console.log("moveBirds")
+                    console.log(imgList)
+
+                    const updatedImgList = [...imgList]
+                    for (let index = 0; index < updatedImgList.length; index++) {
+                        console.log(updatedImgList[index].style.left)
+                        console.log(parseFloat(updatedImgList[index].style.left) + 5)
+                        updatedImgList[index].style.left = `${parseFloat(updatedImgList[index].style.left) + 5}px`
+                    }
+
+                    setImgList(updatedImgList)
+                }
+
+                function randomTime(min, max) {
+                    // 生成一个位于 min 和 max 之间的随机整数
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
+
+
+                function createBirdAtRegularIntervals() {
+                    console.log("createBirdAtRegularIntervals");
+
+                    setImgList(prevImgList => {
+                        const updatedImgList = [...prevImgList, BirdImage()];
+                        const interval = randomTime(3000, 8000);
+                        setTimeout(createBirdAtRegularIntervals, interval);
+                        return updatedImgList;
+                    })
+                }
+
+                const moveBirdsAtRegularIntervals = () => {
+                    setInterval(moveBirds, 1000)
+                }
+
+                useEffect(() => {
+
+                    createBirdAtRegularIntervals()
+                    moveBirdsAtRegularIntervals()
+
+                }, [])
+
+
+
+                return (
+                    <div>
+                        <div className="top-div">
+                            <span>Score: {score}</span>
+                        </div>
+                        <div className="container">
+                            {imgList.map(img => (
+                                img
+                            ))}
+                        </div>
+                    </div>
+                );
+            };
+            /*
+        <div class="top-div">
+            <span>Scores: 0</span>
+        </div>
+        <div class="container">
+            <img id="movingImage" class="moving-image" src="image/bird1.png">
+    
+        </div>
+            var img = document.getElementById('movingImage');
+    
+            const generateBird = () => {
+    
             }
-        });
-    </script>
+            document.addEventListener('click', function (event) {
+                // 獲取圖片的位置和大小信息
+                var rect = img.getBoundingClientRect();
+                var imgLeft = rect.left;
+                var imgTop = rect.top;
+                var imgRight = imgLeft + img.width;
+                var imgBottom = imgTop + img.height;
+    
+                // 獲取滑鼠的位置
+                var mouseX = event.clientX;
+                var mouseY = event.clientY;
+    
+                // 判斷滑鼠是否在圖片範圍內
+                if (mouseX >= imgLeft && mouseX <= imgRight && mouseY >= imgTop && mouseY <= imgBottom) {
+                    console.log('Mouse is on the image.');
+                    img.parentNode.removeChild(img);
+                } else {
+                    console.log('Mouse is not on the image.');
+                }
+            });*/
+            ReactDOM.render(<App />, document.getElementById('root'));
+        </script>
+    </div>
 </body>
 
 
