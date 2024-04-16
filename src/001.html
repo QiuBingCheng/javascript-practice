@@ -45,12 +45,13 @@
             const { useState, useEffect } = React;
 
             const App = () => {
+                console.log("APP render")
 
                 const [score, setScore] = useState(0);
                 const [imgList, setImgList] = useState([])
 
-                const BirdImage = () => {
-                    return <img key={1} className="moving-image" src="image/bird1.png" />
+                const BirdImage = (id) => {
+                    return <img key={id} className="moving-image" src="image/bird1.png" />
                 }
 
                 const moveBirds = () => {
@@ -68,7 +69,6 @@
                 }
 
                 function randomTime(min, max) {
-                    // 生成一个位于 min 和 max 之间的随机整数
                     return Math.floor(Math.random() * (max - min + 1)) + min;
                 }
 
@@ -77,12 +77,21 @@
                     console.log("createBirdAtRegularIntervals");
 
                     setImgList(prevImgList => {
-                        const updatedImgList = [...prevImgList, BirdImage()];
-                        const interval = randomTime(3000, 8000);
-                        setTimeout(createBirdAtRegularIntervals, interval);
+                        const updatedImgList = [...prevImgList, BirdImage(prevImgList.length)];
                         return updatedImgList;
                     })
+
+                    const interval = randomTime(1000, 2000);
+                    setTimeout(createBirdAtRegularIntervals, interval);
+
+                    console.log(imgList)
+
                 }
+
+                useEffect(() => {
+                    console.log("effect")
+                    console.log(imgList);
+                }, [imgList]);
 
                 const moveBirdsAtRegularIntervals = () => {
                     setInterval(moveBirds, 1000)
@@ -91,7 +100,7 @@
                 useEffect(() => {
 
                     createBirdAtRegularIntervals()
-                    moveBirdsAtRegularIntervals()
+                    //moveBirdsAtRegularIntervals()
 
                 }, [])
 
@@ -102,6 +111,7 @@
                         <div className="top-div">
                             <span>Score: {score}</span>
                         </div>
+                        <button onClick={() => alert(imgList)}></button>
                         <div className="container">
                             {imgList.map(img => (
                                 img
