@@ -21,7 +21,7 @@
         .container {
             background-color: aliceblue;
             width: 100%;
-            height: 200px;
+            height: 600px;
             overflow: hidden;
             position: relative;
         }
@@ -42,68 +42,71 @@
         <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
         <script type="text/babel">
+
             const { useState, useEffect } = React;
 
+            let uniqueID = 0
             const App = () => {
-                console.log("APP render")
 
                 const [score, setScore] = useState(0);
                 const [imgList, setImgList] = useState([])
+                const FREQUENCY_OF_OCCURRENECE = 0.3
 
                 const BirdImage = (id) => {
-                    return <img key={id} className="moving-image" src="image/bird1.png" />
+
+                    const handleClick = () => {
+                        console.log("click")
+
+                        setTimeout(() => {
+
+                            setImgList(prevImgList => {
+                                console.log(id)
+                                console.log(prevImgList)
+                                return prevImgList.filter(img => img.key != id)
+                            })
+                        }, 0)
+
+                        setScore(prevScore => prevScore + 1);
+                    };
+
+                    const top = `${Math.floor(Math.random() * 12) * 50}px`;
+                    return <img key={id} className="moving-image" src="image/bird1.png" onClick={handleClick} style={{ top: top, left: "0px" }} />
                 }
 
                 const moveBirds = () => {
-                    console.log("moveBirds")
-                    console.log(imgList)
-
-                    const updatedImgList = [...imgList]
-                    for (let index = 0; index < updatedImgList.length; index++) {
-                        console.log(updatedImgList[index].style.left)
-                        console.log(parseFloat(updatedImgList[index].style.left) + 5)
-                        updatedImgList[index].style.left = `${parseFloat(updatedImgList[index].style.left) + 5}px`
-                    }
-
-                    setImgList(updatedImgList)
-                }
-
-                function randomTime(min, max) {
-                    return Math.floor(Math.random() * (max - min + 1)) + min;
-                }
-
-
-                function createBirdAtRegularIntervals() {
-                    console.log("createBirdAtRegularIntervals");
 
                     setImgList(prevImgList => {
-                        const updatedImgList = [...prevImgList, BirdImage(prevImgList.length)];
-                        return updatedImgList;
+                        return prevImgList.map(img => {
+                            const left = parseFloat(img.props.style.left) + 5
+                            return React.cloneElement(img, { style: { ...img.props.style, left: `${left}px` } })
+                        })
                     })
+                }
 
-                    const interval = randomTime(1000, 2000);
-                    setTimeout(createBirdAtRegularIntervals, interval);
+                function isTimeToAppear() {
+                    return Math.random() >= (1 - FREQUENCY_OF_OCCURRENECE)
+                }
 
-                    console.log(imgList)
+                function createBirdAtRegularIntervals() {
 
+                    if (isTimeToAppear()) {
+                        setImgList(prevImgList => {
+                            const updatedImgList = [...prevImgList, BirdImage(uniqueID)];
+                            return updatedImgList;
+                        })
+                        uniqueID++;
+                    }
                 }
 
                 useEffect(() => {
-                    console.log("effect")
-                    console.log(imgList);
-                }, [imgList]);
+                    var createIntervalId = setInterval(createBirdAtRegularIntervals, 1000);
+                    var moveIntervalId = setInterval(moveBirds, 500);
 
-                const moveBirdsAtRegularIntervals = () => {
-                    setInterval(moveBirds, 1000)
-                }
-
-                useEffect(() => {
-
-                    createBirdAtRegularIntervals()
-                    //moveBirdsAtRegularIntervals()
-
+                    return () => {
+                        clearInterval(createIntervalId);
+                        clearInterval(moveIntervalId);
+                    };
                 }, [])
-
 
 
                 return (
@@ -111,7 +114,6 @@
                         <div className="top-div">
                             <span>Score: {score}</span>
                         </div>
-                        <button onClick={() => alert(imgList)}></button>
                         <div className="container">
                             {imgList.map(img => (
                                 img
@@ -120,43 +122,10 @@
                     </div>
                 );
             };
-            /*
-        <div class="top-div">
-            <span>Scores: 0</span>
-        </div>
-        <div class="container">
-            <img id="movingImage" class="moving-image" src="image/bird1.png">
-    
-        </div>
-            var img = document.getElementById('movingImage');
-    
-            const generateBird = () => {
-    
-            }
-            document.addEventListener('click', function (event) {
-                // 獲取圖片的位置和大小信息
-                var rect = img.getBoundingClientRect();
-                var imgLeft = rect.left;
-                var imgTop = rect.top;
-                var imgRight = imgLeft + img.width;
-                var imgBottom = imgTop + img.height;
-    
-                // 獲取滑鼠的位置
-                var mouseX = event.clientX;
-                var mouseY = event.clientY;
-    
-                // 判斷滑鼠是否在圖片範圍內
-                if (mouseX >= imgLeft && mouseX <= imgRight && mouseY >= imgTop && mouseY <= imgBottom) {
-                    console.log('Mouse is on the image.');
-                    img.parentNode.removeChild(img);
-                } else {
-                    console.log('Mouse is not on the image.');
-                }
-            });*/
+
             ReactDOM.render(<App />, document.getElementById('root'));
         </script>
     </div>
 </body>
-
 
 </html>
