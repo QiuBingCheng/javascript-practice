@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>002 to-do-list</title>
+    <style>
+        .wrapper {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .main-container {
+            left: 10%;
+            height: 100%;
+            width: 80%;
+            border: 1px solid #aaa;
+            position: absolute;
+        }
+
+        .item-wrapper {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            background-color: aliceblue;
+            padding-left: 10px;
+        }
+
+        .item {
+            margin-left: 5px;
+            font-size: 1.2rem;
+        }
+
+        .item.deleted {
+            text-decoration: line-through;
+        }
+
+        .horizontal-line {
+            border-bottom: 1px solid #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+        <!-- 引入 React 和 ReactDOM 的 JavaScript 文件 -->
+        <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
+        <script type="text/babel">
+
+            const { useState, useEffect } = React;
+
+            const App = () => {
+
+                const Item = () => {
+
+                    const [isChecked, setIsChecked] = useState(false);
+                    const handleCheckboxChange = (event) => {
+                        setIsChecked(event.target.checked);
+                    };
+
+                    return (
+                        <div>
+                            <div className="item-wrapper">
+                                <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange}></input>
+                                <span className={`item ${isChecked ? "deleted" : ""}`}>1. do something</span>
+                            </div>
+                            <div className="horizontal-line">
+                            </div>
+                        </div>
+                    )
+                }
+
+                useEffect(() => {
+                }, [])
+
+
+                return (
+                    <div className={"wrapper"}>
+                        <div className={'main-container'}>
+                            <h1>My To Do List</h1>
+                            <Item />
+                        </div>
+                    </div >
+                );
+            };
+
+            ReactDOM.render(<App />, document.getElementById('root'));
+        </script>
+    </div>
+</body>
+
+</html>
