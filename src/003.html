@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>002 to-do-list</title>
+    <script src="https://kit.fontawesome.com/699f943a60.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Microsoft JhengHei;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-container {
+            height: 35px;
+            width: 100%;
+            border-bottom: 1px solid #aaa;
+            align-items: center;
+            display: flex;
+            background-color: rgba(140, 171, 217, 0.7);
+        }
+
+        .nav-left-container {
+            width: 60%;
+        }
+
+        .nav-right-container {
+            width: 35%;
+        }
+
+        .nav-right-item {
+            float: right;
+            margin-left: 20px;
+            display: block;
+        }
+
+        .left-icon {
+            margin-left: 10px;
+        }
+
+        .user-name {
+            margin-left: 8px;
+            color: black;
+            font-weight: 800;
+        }
+
+        .main-container {
+            height: 600px;
+            background-color: rgba(140, 171, 217, 0.7);
+        }
+
+        .msg-wrapper {
+            display: block;
+            position: relative;
+            padding-top: 5px;
+        }
+
+
+        .status-text {
+            color: rgba(61, 87, 124, 0.9);
+            font-size: 0.8rem;
+        }
+
+        .left-msg-container {
+            margin-top: 5px;
+            margin-left: 5px;
+            position: absolute;
+            left: 0;
+        }
+
+        .left-msg-wrapper {
+            margin-left: 10px;
+        }
+
+        .user-img {
+            width: 30px;
+            float: left;
+        }
+
+        .msg-text {
+            padding: 6px;
+            max-width: 50%;
+            border-radius: 10px;
+        }
+
+        .left-msg-text {
+            float: left;
+            margin-left: 7px;
+            background-color: white;
+        }
+
+        .left-msg-status-wrapper {
+            float: left;
+            margin-left: 6px;
+            text-align: left;
+        }
+
+        .left-msg-date {
+            position: absolute;
+            bottom: 0px;
+        }
+
+        .right-msg-date {
+            position: absolute;
+            bottom: 0px;
+        }
+
+        .right-msg-text {
+            float: right;
+            margin-right: 6px;
+            background-color: rgba(157, 230, 148, 0.9);
+        }
+
+        .right-msg-status {
+            position: absolute;
+            bottom: 15px;
+        }
+
+        .right-msg-status-wrapper {
+            float: right;
+            margin-right: 8px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+        <!-- 引入 React 和 ReactDOM 的 JavaScript 文件 -->
+        <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
+        <script type="text/babel">
+
+            const { useState, useEffect, useRef } = React;
+
+            const NavArea = () => {
+
+                return (
+                    <div className={'nav-container'}>
+                        <div className={'nav-left-container'}>
+                            <i className="fa-solid fa-chevron-left left-icon"></i>
+                            <span className="user-name">Ricardo</span>
+                        </div>
+                        <div className={"nav-right-container"}>
+                            <i className="fas fa-list nav-right-item"></i>
+                            <i className="fas fa-phone nav-right-item"></i>
+                            <i className="fas fa-search nav-right-item"></i>
+                        </div>
+                    </div >
+
+                )
+            }
+
+            const MainArea = () => {
+                return (
+                    <div className={'main-container'}>
+
+                        <div className={'msg-wrapper'}>
+                            <div className="right-msg-container">
+                                <div className="msg-text right-msg-text">trwtwtrewYA</div>
+                                <div className="right-msg-status-wrapper status-text">
+                                    <div className="msg-status">已讀</div>
+                                    <div className="right-msg-date">上午 10:51</div>
+                                </div>
+                                <div style={{ clear: "both" }}></div>
+                            </div>
+                        </div>
+
+                        <div className={'msg-wrapper'}>
+                            <div className="right-msg-container">
+                                <div className="msg-text right-msg-text">好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國</div>
+                                <div className="right-msg-status-wrapper status-text">
+                                    <div className="right-msg-status">已讀</div>
+                                    <div className="right-msg-date">上午 10:51</div>
+                                </div>
+                                <div style={{ clear: "both" }}></div>
+                            </div>
+                        </div>
+
+
+                        <div className={'msg-wrapper'}>
+                            <div className="left-msg-container">
+                                <img src="image/user.jpg" className="user-img"></img>
+                                <span className="msg-text left-msg-text">好想去美國好想去美國好想去美國好想去美國</span>
+                                <div className="left-msg-status-wrapper status-text">
+                                    <div className="left-msg-date">上午 10:51</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div >
+                )
+            }
+
+            const App = () => {
+                return (
+                    <div className={"wrapper"}>
+                        <NavArea />
+                        <MainArea />
+                    </div >
+                );
+            };
+
+            ReactDOM.render(<App />, document.getElementById('root'));
+        </script>
+    </div>
+</body>
+
+</html>
