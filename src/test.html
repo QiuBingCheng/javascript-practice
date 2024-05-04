@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* 2列 */
+            grid-template-rows: auto;
+            /* 行高自動調整 */
+            grid-gap: 10px;
+            /* 元素間的間距 */
+        }
+
+        .item {
+            background-color: #ccc;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item3 {
+            grid-row: span 2;
+            /* 佔據2行 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="grid-container">
+        <div class="item item1">1</div>
+        <div class="item item3">2</div>
+        <div class="item item2">3</div>
+    </div>
+
+</body>
+
+</html>

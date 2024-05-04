@@ -70,7 +70,6 @@
             margin-top: 5px;
             margin-left: 5px;
             position: absolute;
-            left: 0;
         }
 
         .left-msg-wrapper {
@@ -102,10 +101,7 @@
             width: 70px;
         }
 
-        .left-msg-date {
-            position: absolute;
-            bottom: 0px;
-        }
+        .left-msg-date {}
 
         .right-msg-text {
             float: right;
@@ -124,6 +120,7 @@
             margin-right: 8px;
             position: relative;
             text-align: right;
+            top: calc(100% - 34px);
         }
     </style>
 </head>
@@ -137,60 +134,92 @@
         <script type="text/babel">
 
             const { useState, useEffect, useRef } = React;
-
-            const NavArea = () => {
-
-                return (
-                    <div className={'nav-container'}>
-                        <div className={'nav-left-container'}>
-                            <i className="fa-solid fa-chevron-left left-icon"></i>
-                            <span className="user-name">Ricardo</span>
-                        </div>
-                        <div className={"nav-right-container"}>
-                            <i className="fas fa-list nav-right-item"></i>
-                            <i className="fas fa-phone nav-right-item"></i>
-                            <i className="fas fa-search nav-right-item"></i>
-                        </div>
-                    </div >
-
-                )
-            }
-
-            const MainArea = () => {
-                return (
-                    <div className={'main-container'}>
-
-                        <div class="clearfix">
-                            <div className={'msg-wrapper'}>
-                                <div className="msg-text right-msg-text">早安 美國仔</div>
-                                <div className="right-msg-status-wrapper status-text">
-                                    <div className="right-msg-status">已讀</div>
-                                    <div className="right-msg-date">上午 10:51</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfix">
-                            <div className={'msg-wrapper'}>
-                                <div className="left-msg-container">
-                                    <img src="image/user.jpg" className="user-img"></img>
-                                    <span className="msg-text left-msg-text">好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國好想去美國</span>
-                                    <div className="left-msg-status-wrapper status-text">
-                                        <div className="left-msg-date">上午 10:51</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div >
-                )
-            }
-
             const App = () => {
+                const [msgList, setMsgList] = useState([])
+
+                const NavArea = () => {
+
+                    return (
+                        <div className={'nav-container'}>
+                            <div className={'nav-left-container'}>
+                                <i className="fa-solid fa-chevron-left left-icon"></i>
+                                <span className="user-name">Ricardo</span>
+                            </div>
+                            <div className={"nav-right-container"}>
+                                <i className="fas fa-list nav-right-item"></i>
+                                <i className="fas fa-phone nav-right-item"></i>
+                                <i className="fas fa-search nav-right-item"></i>
+                            </div>
+                        </div >
+
+                    )
+                }
+
+                const RightMessage = (props) => {
+
+                    return (
+                        <div className={'msg-wrapper clearfix'} id={`right-msg-wrapper${props.id}`}>
+                            <div className="msg-text right-msg-text">{props.msg}</div>
+                            <div className="right-msg-status-wrapper status-text" id={`right-msg-status-wrapper${props.id}`}>
+                                <div className="right-msg-status">{props.status}</div>
+                                <div className="right-msg-date">{props.date}</div>
+                            </div>
+                        </div>
+                    )
+                }
+
+                const LeftMessage = (props) => {
+
+                    return (
+                        <div className={'msg-wrapper clearfix'} id={`left-msg-wrapper${props.id}`}>
+                            <img src="image/user.jpg" className="user-img"></img>
+                            <div className="msg-text left-msg-text">{props.msg}</div>
+                            <div className="left-msg-status-wrapper status-text">
+                                <div className="left-msg-date">{props.date}</div>
+                            </div>
+                        </div>
+                    )
+                }
+
+
+                useEffect(() => {
+
+                    const msgs = [
+                        { user: "me", msg: "Hi 上涵", status: "已讀", date: "上午 10:51" },
+                        { user: "me", msg: "你想去哪你想去哪你想去哪你想去哪你想去哪", status: "已讀", date: "上午 10:51" },
+                        { user: "ricardo", msg: "我嗎", status: "已讀", date: "上午 10:52" },
+                        { user: "ricardo", msg: "好想去美國好想去美國好想去美國好想去美國好想去", status: "已讀", date: "上午 10:52" }
+                    ]
+                    setMsgList(msgs)
+
+                }, [])
+
+                useEffect(() => {
+                    msgList.forEach((msgItem, index) => {
+                        const msgWrapper = document.getElementById(`right-msg-wrapper${index}`);
+                        const rightMsgStatusWrapper = document.getElementById(`right-msg-status-wrapper${index}`);
+                        console.log(msgWrapper, rightMsgStatusWrapper)
+                        if (msgWrapper && rightMsgStatusWrapper) {
+                            const msgWrapperHeight = msgWrapper.offsetHeight;
+                            rightMsgStatusWrapper.style.top = (msgWrapperHeight - 38) + "px";
+                        }
+                    });
+                }, [msgList]);
+
                 return (
                     <div className={"wrapper"}>
+
                         <NavArea />
-                        <MainArea />
+
+                        <div className={'main-container'}>
+
+                            {msgList.map((msgItem, index) => {
+                                if (msgItem.user === "me")
+                                    return <RightMessage msg={msgItem.msg} status={msgItem.status} date={msgItem.date} id={index} />
+
+                                return <LeftMessage msg={msgItem.msg} date={msgItem.date} id={index} />
+                            })}
+                        </div>
                     </div >
                 );
             };
