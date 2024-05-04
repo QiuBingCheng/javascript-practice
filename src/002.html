@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>002 to-do-list</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         .wrapper {
             width: 100%;
-            height: 600px;
+            height: 650px;
             position: relative;
             margin-top: 20px;
         }
@@ -109,7 +110,16 @@
                 }
 
                 const createNewItem = () => {
-                    console.log(inputRef)
+                    if (itemNameList.length >= 10) {
+                        alert("Free accounts are limited to only 10 items.")
+                        return
+                    }
+
+                    if (inputRef.current.value === "") {
+                        alert("The item name cannot be left empty")
+                        return
+                    }
+
                     const udpateItemList = [...itemNameList, inputRef.current.value]
                     setItemNameList(udpateItemList)
                 }
@@ -121,6 +131,13 @@
                             <input ref={inputRef} className="creation-input" type="text" placeholder="new to-do-item name"></input>
                             <button className={'creation-button'} onClick={createNewItem}>Create</button>
                         </div>
+                    )
+                }
+
+                const SummaryArea = () => {
+                    return (
+                        <span>
+                        </span>
                     )
                 }
 
