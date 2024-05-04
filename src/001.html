@@ -72,14 +72,21 @@
                     return <img key={id} className="moving-image" src="image/bird1.png" onClick={handleClick} style={{ top: top, left: "0px" }} />
                 }
 
-                const moveBirds = () => {
-
+                const moveBirds = (rightMostX) => {
                     setImgList(prevImgList => {
-                        return prevImgList.map(img => {
+                        let updatedImgList = prevImgList.map(img => {
                             const left = parseFloat(img.props.style.left) + 5
                             return React.cloneElement(img, { style: { ...img.props.style, left: `${left}px` } })
                         })
+
+                        updatedImgList = updatedImgList.filter(img => {
+                            return parseFloat(img.props.style.left) <= rightMostX
+                        })
+
+                        console.log(updatedImgList.length)
+                        return updatedImgList
                     })
+
                 }
 
                 function isTimeToAppear() {
@@ -98,8 +105,12 @@
                 }
 
                 useEffect(() => {
+                    const container = document.getElementById('container')
+                    const rightMostX = container.getBoundingClientRect().right
+                    console.log(container, rightMostX)
+
                     var createIntervalId = setInterval(createBirdAtRegularIntervals, 1000);
-                    var moveIntervalId = setInterval(moveBirds, 500);
+                    var moveIntervalId = setInterval(() => moveBirds(rightMostX), 100);
 
                     return () => {
                         clearInterval(createIntervalId);
@@ -113,7 +124,7 @@
                         <div className="top-div">
                             <span>Score: {score}</span>
                         </div>
-                        <div className="container">
+                        <div id="container" className="container">
                             {imgList.map(img => (
                                 img
                             ))}
