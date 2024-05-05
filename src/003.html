@@ -57,29 +57,12 @@
         }
 
         .msg-wrapper {
-            padding-top: 5px;
+            margin-bottom: 8px;
         }
 
+        .msg-wrapper:not(:first-child) {
+            margin-top: 8px;
 
-        .status-text {
-            color: rgba(61, 87, 124, 0.9);
-            font-size: 0.8rem;
-        }
-
-        .left-msg-container {
-            margin-top: 5px;
-            margin-left: 5px;
-            position: absolute;
-        }
-
-        .left-msg-wrapper {
-            margin-left: 10px;
-        }
-
-        .user-img {
-            width: 30px;
-            float: left;
-            margin-left: 5px;
         }
 
         .msg-text {
@@ -94,33 +77,43 @@
             background-color: white;
         }
 
-        .left-msg-status-wrapper {
-            float: left;
-            margin-left: 6px;
-            text-align: left;
-            width: 70px;
-        }
-
-        .left-msg-date {}
-
         .right-msg-text {
             float: right;
             margin-right: 6px;
             background-color: rgba(157, 230, 148, 0.9);
         }
 
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
+        .status-wrapper {
+            position: relative;
+        }
+
+        .left-msg-status-wrapper {
+            float: left;
+            margin-left: 6px;
+            text-align: left;
         }
 
         .right-msg-status-wrapper {
             float: right;
             margin-right: 8px;
-            position: relative;
             text-align: right;
-            top: calc(100% - 34px);
+        }
+
+        .status-text {
+            color: rgba(61, 87, 124, 0.9);
+            font-size: 0.8rem;
+        }
+
+        .user-img {
+            width: 30px;
+            float: left;
+            margin-left: 5px;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
         }
     </style>
 </head>
@@ -143,7 +136,7 @@
                         <div className={'nav-container'}>
                             <div className={'nav-left-container'}>
                                 <i className="fa-solid fa-chevron-left left-icon"></i>
-                                <span className="user-name">Ricardo</span>
+                                <span className="user-name">Chicardo</span>
                             </div>
                             <div className={"nav-right-container"}>
                                 <i className="fas fa-list nav-right-item"></i>
@@ -158,9 +151,9 @@
                 const RightMessage = (props) => {
 
                     return (
-                        <div className={'msg-wrapper clearfix'} id={`right-msg-wrapper${props.id}`}>
+                        <div className={'msg-wrapper clearfix'} id={`msg-wrapper${props.id}`}>
                             <div className="msg-text right-msg-text">{props.msg}</div>
-                            <div className="right-msg-status-wrapper status-text" id={`right-msg-status-wrapper${props.id}`}>
+                            <div className="status-wrapper right-msg-status-wrapper status-text" id={`msg-status-wrapper${props.id}`}>
                                 <div className="right-msg-status">{props.status}</div>
                                 <div className="right-msg-date">{props.date}</div>
                             </div>
@@ -171,10 +164,10 @@
                 const LeftMessage = (props) => {
 
                     return (
-                        <div className={'msg-wrapper clearfix'} id={`left-msg-wrapper${props.id}`}>
+                        <div className={'msg-wrapper clearfix'} id={`msg-wrapper${props.id}`}>
                             <img src="image/user.jpg" className="user-img"></img>
                             <div className="msg-text left-msg-text">{props.msg}</div>
-                            <div className="left-msg-status-wrapper status-text">
+                            <div className="status-wrapper left-msg-status-wrapper status-text" id={`msg-status-wrapper${props.id}`}>
                                 <div className="left-msg-date">{props.date}</div>
                             </div>
                         </div>
@@ -185,8 +178,8 @@
                 useEffect(() => {
 
                     const msgs = [
-                        { user: "me", msg: "Hi 上涵", status: "已讀", date: "上午 10:51" },
-                        { user: "me", msg: "你想去哪你想去哪你想去哪你想去哪你想去哪", status: "已讀", date: "上午 10:51" },
+                        { user: "me", msg: "Hi 下涵", status: "已讀", date: "上午 10:51" },
+                        { user: "me", msg: "你想去哪裡玩", status: "已讀", date: "上午 10:51" },
                         { user: "ricardo", msg: "我嗎", status: "已讀", date: "上午 10:52" },
                         { user: "ricardo", msg: "好想去美國好想去美國好想去美國好想去美國好想去", status: "已讀", date: "上午 10:52" }
                     ]
@@ -195,15 +188,16 @@
                 }, [])
 
                 useEffect(() => {
+
                     msgList.forEach((msgItem, index) => {
-                        const msgWrapper = document.getElementById(`right-msg-wrapper${index}`);
-                        const rightMsgStatusWrapper = document.getElementById(`right-msg-status-wrapper${index}`);
-                        console.log(msgWrapper, rightMsgStatusWrapper)
-                        if (msgWrapper && rightMsgStatusWrapper) {
-                            const msgWrapperHeight = msgWrapper.offsetHeight;
-                            rightMsgStatusWrapper.style.top = (msgWrapperHeight - 38) + "px";
+                        const msgWrapper = document.getElementById(`msg-wrapper${index}`);
+                        const msgStatusWrapper = document.getElementById(`msg-status-wrapper${index}`);
+                        console.log(`${index} msgWrapper: ${msgWrapper.offsetHeight} stautusWrapper: ${msgStatusWrapper.offsetHeight}`)
+                        if (msgWrapper && msgStatusWrapper) {
+                            msgStatusWrapper.style.top = (msgWrapper.offsetHeight - msgStatusWrapper.offsetHeight) + "px";
                         }
                     });
+
                 }, [msgList]);
 
                 return (
