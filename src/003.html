@@ -19,7 +19,7 @@
         }
 
         .nav-container {
-            height: 35px;
+            height: 50px;
             width: 100%;
             border-bottom: 1px solid rgba(142, 186, 243, 0.9);
             align-items: center;
@@ -28,17 +28,23 @@
         }
 
         .nav-left-container {
-            width: 60%;
+            width: 50%;
         }
 
         .nav-right-container {
-            width: 35%;
+            display: flex;
+            flex-direction: row-reverse;
+            width: 50%;
+            align-items: center;
+        }
+
+        .nav-right-item:first-child {
+            margin-right: 10px;
+
         }
 
         .nav-right-item {
-            float: right;
             margin-left: 20px;
-            display: block;
         }
 
         .left-icon {
@@ -57,30 +63,35 @@
         }
 
         .msg-wrapper {
-            margin-bottom: 8px;
+            padding-top: 5px;
+            padding-bottom: 5px;
         }
 
-        .msg-wrapper:not(:first-child) {
-            margin-top: 8px;
-
+        .right-msg-wrapper {
+            display: flex;
+            flex-direction: row-reverse;
         }
 
         .msg-text {
             padding: 6px;
             max-width: 50%;
             border-radius: 10px;
-        }
-
-        .left-msg-text {
-            float: left;
-            margin-left: 7px;
-            background-color: white;
+            word-wrap: break-word;
         }
 
         .right-msg-text {
-            float: right;
             margin-right: 6px;
             background-color: rgba(157, 230, 148, 0.9);
+        }
+
+        .left-msg-wrapper {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .left-msg-text {
+            margin-left: 7px;
+            background-color: white;
         }
 
         .status-wrapper {
@@ -88,15 +99,18 @@
         }
 
         .left-msg-status-wrapper {
-            float: left;
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
             margin-left: 6px;
-            text-align: left;
         }
 
         .right-msg-status-wrapper {
-            float: right;
             margin-right: 8px;
             text-align: right;
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
         }
 
         .status-text {
@@ -106,14 +120,8 @@
 
         .user-img {
             width: 30px;
-            float: left;
+            height: 35px;
             margin-left: 5px;
-        }
-
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
         }
     </style>
 </head>
@@ -150,11 +158,11 @@
                 const RightMessage = (props) => {
 
                     return (
-                        <div className={'msg-wrapper clearfix'} id={`msg-wrapper${props.id}`}>
+                        <div className={'msg-wrapper right-msg-wrapper'}>
                             <div className="msg-text right-msg-text">{props.msg}</div>
-                            <div className="status-wrapper right-msg-status-wrapper status-text" id={`msg-status-wrapper${props.id}`}>
-                                <div className="right-msg-status">{props.status}</div>
-                                <div className="right-msg-date">{props.date}</div>
+                            <div className="right-msg-status-wrapper status-text">
+                                <div>{props.status}</div>
+                                <div>{props.date}</div>
                             </div>
                         </div>
                     )
@@ -163,11 +171,11 @@
                 const LeftMessage = (props) => {
 
                     return (
-                        <div className={'msg-wrapper clearfix'} id={`msg-wrapper${props.id}`}>
+                        <div className={'msg-wrapper left-msg-wrapper'}>
                             <img src="image/user.jpg" className="user-img"></img>
                             <div className="msg-text left-msg-text">{props.msg}</div>
-                            <div className="status-wrapper left-msg-status-wrapper status-text" id={`msg-status-wrapper${props.id}`}>
-                                <div className="left-msg-date">{props.date}</div>
+                            <div className="left-msg-status-wrapper status-text">
+                                <div>{props.date}</div>
                             </div>
                         </div>
                     )
@@ -184,19 +192,6 @@
                     setMsgList(msgs)
 
                 }, [])
-
-                useEffect(() => {
-
-                    msgList.forEach((msgItem, index) => {
-                        const msgWrapper = document.getElementById(`msg-wrapper${index}`);
-                        const msgStatusWrapper = document.getElementById(`msg-status-wrapper${index}`);
-                        console.log(`${index} msgWrapper: ${msgWrapper.offsetHeight} stautusWrapper: ${msgStatusWrapper.offsetHeight}`)
-                        if (msgWrapper && msgStatusWrapper) {
-                            msgStatusWrapper.style.top = (msgWrapper.offsetHeight - msgStatusWrapper.offsetHeight) + "px";
-                        }
-                    });
-
-                }, [msgList]);
 
                 return (
                     <div className={"wrapper"}>
